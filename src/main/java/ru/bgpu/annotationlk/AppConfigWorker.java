@@ -17,7 +17,7 @@ public class AppConfigWorker {
 
     public static void configProcessing(String prefix, String filePropName) {
 
-        Reflections reflections = new Reflections(prefix,new FieldAnnotationsScanner());
+        FieldAnnotationsScanner scanner = new FieldAnnotationsScanner();    
 
         File prop = new File(filePropName);
         if(prop.isFile()) {
