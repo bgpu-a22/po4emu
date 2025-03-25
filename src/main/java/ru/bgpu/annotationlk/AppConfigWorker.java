@@ -14,83 +14,81 @@ public class AppConfigWorker {
     private static Logger logger = Logger.getLogger(AppConfigWorker.class.getName());
 
     public static void configProcessing(String prefix, String filePropName) {
-
-        FieldAnnotationsScanner scanner = new FieldAnnotationsScanner();    
+        // ������������� Reflections � ��������� ������ � ���������
+        Reflections reflections = new Reflections(prefix, new FieldAnnotationsScanner());
 
         File prop = new File(filePropName);
-        if(prop.isFile()) {
+        if (prop.isFile()) {
             try {
                 Properties properties = new Properties();
                 properties.load(new FileInputStream(prop));
 
                 reflections.getFieldsAnnotatedWith(AppConfig.class).forEach(
                         field -> {
-
                             String value = properties.getProperty(
                                     field.getName(),
                                     field.getAnnotation(AppConfig.class).defValue()
                             );
                             Object targetValue = null;
 
-                            // Обработка типов поля
                             if (field.getType().equals(String.class)) {
-                                targetValue = value; // Просто присваиваем строку
+                                targetValue = value;
                             } else if (field.getType().equals(Integer.class)) {
-                                targetValue = Integer.valueOf(value); // Преобразуем строку в объект Integer
+                                targetValue = Integer.valueOf(value);
                             } else if (field.getType().equals(int.class)) {
-                                targetValue = Integer.parseInt(value); // Преобразуем строку в примитив int
+                                targetValue = Integer.parseInt(value);
                             } else if (field.getType().equals(Float.class)) {
-                                targetValue = Float.valueOf(value); // Преобразуем строку в объект Float
+                                targetValue = Float.valueOf(value);
                             } else if (field.getType().equals(float.class)) {
-                                targetValue = Float.parseFloat(value); // Преобразуем строку в примитив float
+                                targetValue = Float.parseFloat(value);
                             } else if (field.getType().equals(Double.class)) {
-                                targetValue = Double.valueOf(value); // Преобразуем строку в объект Double
+                                targetValue = Double.valueOf(value);
                             } else if (field.getType().equals(double.class)) {
-                                targetValue = Double.parseDouble(value); // Преобразуем строку в примитив double
+                                targetValue = Double.parseDouble(value);
                             } else if (field.getType().equals(String[].class)) {
-                                targetValue = value.split(","); // Разбиваем строку по запятой на массив строк
+                                targetValue = value.split(",");
                             } else if (field.getType().equals(Integer[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                Integer[] array = new Integer[values.length]; // Создаем массив объектов Integer
+                                String[] values = value.split(",");
+                                Integer[] array = new Integer[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Integer.valueOf(values[i].trim()); // Преобразуем каждую часть в Integer
+                                    array[i] = Integer.valueOf(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             } else if (field.getType().equals(int[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                int[] array = new int[values.length]; // Создаем массив примитивов int
+                                String[] values = value.split(",");
+                                int[] array = new int[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Integer.parseInt(values[i].trim()); // Преобразуем каждую часть в int
+                                    array[i] = Integer.parseInt(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             } else if (field.getType().equals(Float[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                Float[] array = new Float[values.length]; // Создаем массив объектов Float
+                                String[] values = value.split(",");
+                                Float[] array = new Float[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Float.valueOf(values[i].trim()); // Преобразуем каждую часть в Float
+                                    array[i] = Float.valueOf(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             } else if (field.getType().equals(float[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                float[] array = new float[values.length]; // Создаем массив примитивов float
+                                String[] values = value.split(",");
+                                float[] array = new float[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Float.parseFloat(values[i].trim()); // Преобразуем каждую часть в float
+                                    array[i] = Float.parseFloat(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             } else if (field.getType().equals(Double[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                Double[] array = new Double[values.length]; // Создаем массив объектов Double
+                                String[] values = value.split(",");
+                                Double[] array = new Double[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Double.valueOf(values[i].trim()); // Преобразуем каждую часть в Double
+                                    array[i] = Double.valueOf(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             } else if (field.getType().equals(double[].class)) {
-                                String[] values = value.split(","); // Разбиваем строку на части
-                                double[] array = new double[values.length]; // Создаем массив примитивов double
+                                String[] values = value.split(",");
+                                double[] array = new double[values.length];
                                 for (int i = 0; i < values.length; i++) {
-                                    array[i] = Double.parseDouble(values[i].trim()); // Преобразуем каждую часть в double
+                                    array[i] = Double.parseDouble(values[i].trim());
                                 }
-                                targetValue = array; // Присваиваем готовый массив
+                                targetValue = array;
                             }
 
                             try {
@@ -100,8 +98,8 @@ public class AppConfigWorker {
                             } catch (IllegalAccessException e) {
                                 logger.log(
                                         Level.WARNING,
-                                        "error set "+field.getDeclaringClass().getName()
-                                                +"."+field.getName()+" "+value
+                                        "error set " + field.getDeclaringClass().getName()
+                                                + "." + field.getName() + " " + value
                                 );
                             }
                         }
