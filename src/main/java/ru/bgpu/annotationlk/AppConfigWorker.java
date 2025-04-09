@@ -14,7 +14,6 @@ public class AppConfigWorker {
     private static Logger logger = Logger.getLogger(AppConfigWorker.class.getName());
 
     public static void configProcessing(String prefix, String filePropName) {
-        // Инициализация Reflections с префиксом пакета и сканнером
         Reflections reflections = new Reflections(prefix, new FieldAnnotationsScanner());
 
         File prop = new File(filePropName);
